@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-const DiaryEditor = () => {
+const DiaryEditor = ({ onCreate }) => {
   //html dom 노드를 가져오는 리액트함수
   const authorInput = useRef();
   const contentInput = useRef();
@@ -26,7 +26,14 @@ const DiaryEditor = () => {
       return;
     }
 
+    onCreate(state.author, state.content, state.emotion);
     alert("저장 성공");
+    // 기본값으로 초기화
+    setState({
+      author: "",
+      content: "",
+      emotion: 1,
+    });
   };
   return (
     <div className="DiaryEditor">
