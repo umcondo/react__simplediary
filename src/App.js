@@ -1,12 +1,13 @@
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useCallback, useMemo, useState, useRef, useEffect } from "react";
 import "./App.css";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
+// import OptimizeTest from "./OptimizeTest";
 
 function App() {
   const [data, setData] = useState([]);
 
-  const dataId = useRef(1);
+  const dataId = useRef(0);
 
   const getData = async () => {
     const res = await fetch(
@@ -30,32 +31,43 @@ function App() {
     getData();
   }, []);
 
-  const onCreate = (author, content, emotion) => {
-    const created_date = new Date().getTime();
-    const newItem = {
-      author,
-      content,
-      emotion,
-      created_date,
-      id: dataId.current,
-    };
-    dataId.current += 1;
-    setData([newItem, ...data]);
-  };
+  const onCreate = useCallback(
+    (author, content, emotion) => {
+      const created_date = new Date().getTime();
+      const newItem = {
+        author,
+        content,
+        emotion,
+        created_date,
+        id: dataId.current,
+      };
+      dataId.current += 1;
+      setData((data) => [newItem, ...data]);
+    },
 
-  const onRemove = (targetId) => {
-    // console.log(`${targetId}가 삭제되었습니다.`);
-    const newDiaryList = data.filter((it) => it.id !== targetId);
-    setData(newDiaryList);
-  };
+    []
+  );
 
-  const onEdit = (targetId, newContent) => {
-    setData(
-      data.map((it) =>
-        it.id === targetId ? { ...it, content: newContent } : it
-      )
-    );
-  };
+  const onRemove = useCallback(
+    (targetId) => {
+      // console.log(`${targetId}가 삭제되었습니다.`);
+      setData((data) => data.filter((it) => it.id !== targetId));
+    },
+
+    []
+  );
+
+  const onEdit = useCallback(
+    (targetId, newContent) => {
+      setData((data) =>
+        data.map((it) =>
+          it.id === targetId ? { ...it, content: newContent } : it
+        )
+      );
+    },
+
+    []
+  );
 
   // 연산 최적화
   const getDiaryAnalysis = useMemo(() => {
@@ -71,8 +83,8 @@ function App() {
 
   return (
     <div className="App">
+      {/* <OptimizeTest /> */}
       <DiaryEditor onCreate={onCreate} />
-
       <div>전체 일기 : {data.length}</div>
       <div>기분 좋은 일기 개수 : {goodCount}</div>
       <div>기분 나쁜 일기 개수 : {badCount}</div>
