@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react__simplediary/static/css/main.3eef1f52.css",
+    "main.js": "/react__simplediary/static/js/main.0ada650e.js",
+    "index.html": "/react__simplediary/index.html",
+    "main.3eef1f52.css.map": "/react__simplediary/static/css/main.3eef1f52.css.map",
+    "main.0ada650e.js.map": "/react__simplediary/static/js/main.0ada650e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3eef1f52.css",
+    "static/js/main.0ada650e.js"
+  ]
+}
